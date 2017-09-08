@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.js"></script>
+    <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+    <script type="text/javascript">
+      $(document).ready(function () {
+        var socket = io.connect()
+        $('#push').click(function () {
+          socket.emit('button_clicked', {action: 'button was clicked'})
+        })
+        socket.on('update', function (data) {
+          document.getElementById('click').innerHTML = `You clicked this button ${data.response} times`
+        })
+
+        $('#reset').click(function () {
+          socket.emit('button_reset', {action: ''})
+        })
+        socket.on('update_reset', function (data) {
+          document.getElementById('click').innerHTML = `You clicked this button 0 times`
+        })
+      })
+    </script>
+  </head>
+  <body>
+    <h2>Hello guys</h2>
+    <h3 id="click">You clicked this button 0 times</h3>
+    <button id="push">Push this epic button</button>
+    <button id="reset">Reset</button>
+  </body>
+</html>
